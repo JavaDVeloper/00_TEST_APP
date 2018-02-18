@@ -19,6 +19,7 @@ log/
 *.war
 *.ear
 *.logs
+*.ini
         
 # IntelliJ
 *.iws
@@ -30,6 +31,7 @@ log/
 .classpath
 .project
 .settings/
+*.ini
 
 # Ref: https://labs.consol.de/development/git/2017/02/22/gitignore.html
 # Ref: http://gary-rowe.com/agilestack/2012/10/12/a-gitignore-file-for-intellij-and-eclipse-with-maven/
