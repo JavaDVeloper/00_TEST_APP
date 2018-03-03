@@ -15,6 +15,12 @@ import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /*********************************************************************
  * Hello world!
  * author: Piotr Bar;
@@ -32,10 +38,11 @@ import joptsimple.OptionSet;
 public class App {
 	
     public static void main(String[] args) {
+    	
     	//to view the arguments being entered
         seeCommandlineInput(args);
         
-        //to instantiate App class based in the parameters entered at the commandline
+        //to instantiate App class based in the parameters entered at the commandLine
         actionCommandlineInput(args);
     }
     
@@ -51,6 +58,12 @@ public class App {
     // The getLogger() part should contain the name of the class it's in
     private static Logger LOG;
     
+	private static String VERSION = "0.4";
+	
+	//The URL and name of the SQLite database
+	//TODO: Remove database location and name hard coding and pass in as a parameter in the next version
+	private String databaseFile = "jdbc:sqlite:database/oreallyoreilly.db";
+    
     //CONSTRUCTORS
     //...................................................
     
@@ -65,16 +78,16 @@ public class App {
     	LOG.info("Commandline requested log level: "+logLevel);
     	LOG.info("Application started with log level debug: "+LOG.isDebugEnabled());
     	
-    	//test the logging
-    	testLogOutput();
+    	//test the logging - uncomment if needed
+    	//testLogOutput();
     	
     	this.someInput = new Scanner(System.in);
     	
-    	//do something here
-    	System.out.println(" \n Soon... stuff will happen here.");
+    	//do something here: Display the list of users from the database
+    	showListOfUsers();
     	
     	//pause before exit (this is only useful if an error occurs)
-    	System.out.println(" \n Press enter to exit the program");
+    	System.out.println(" \nPress enter to exit the program");
     	this.someInput.nextLine();
     	
     	//close the program without error
@@ -85,24 +98,58 @@ public class App {
     	this(Level.INFO);
     }
     	
-    	//METHODS used by main() or debug methods - note they are static methods
-    	//......................................................
+    //METHODS used by main() or debug methods - note they are static methods
+    //......................................................
     
-    	/*
-    	 * Write help message to standard output using
-    	 * the provided instance of {@code OptionParser}. 
-    	 */
-    	private static void printUsage(final OptionParser parser) {
+    /*
+     * write out the users in a users table for the database specified 
+     */
+    private void showListOfUsers() {
+    	
+    	this.today = new Date();
+    	LOG.debug("Getting list of Users from Database as of "+today);
+    	
+    	//if log level id debug e.g. -v parameter used then show database file being used
+    	LOG.debug("Database file: "+this.databaseFile);
+    	
+    	//Get JDBC connection to database
+    	Connection connection = null;
+    	
+    	try {
+    		//create a database connection
+    		connection = DriverManager.getConnection(this.databaseFile);
     		
-    		try {
-    			parser.printHelpOn(System.out);
-    		}
-    		catch(IOException ioEx) {
-    			//System.out.println("ERROR: Unable to print usage - "+ioEX);
-    			LOG.error("ERROR: Unable to print usage - "+ioEx);
+    		Statement statement = connection.createStatement();
+    		statement.setQueryTimeout(30); //set timeout to 30 sec
+    		
+    		//run the query
+    		ResultSet resultSet = statement.executeQuery("select * from user");
+    		
+    		//iterate through the results create User objects put in the ListArray
+    		
+    		while(resultSet.next()) {
+    			LOG.debug("User found: "+resultSet.getString("userName"));
     		}
     	}
-    	
+    	catch(SQLException e) {
+    		//if the error message is "out of memory",
+    		//it probably means no database file is found
+    		LOG.error(e.getMessage());
+    	}
+    	finally {
+    		try {
+    			if(connection!=null) {
+    				connection.close();
+    			}
+    			
+    		}
+    		catch(SQLException e) {
+    			//connection close failed
+    			LOG.error(e.getMessage());
+    		}
+    	}
+    }    
+        	
     	/*
     	 * action the arguments presented at the command line
     	 * instantiate the App class based on the arguments passed
@@ -130,7 +177,7 @@ public class App {
     			}
     			
     			if(options.has("version")) {
-    				System.out.println("MyFirstMavenApp version 1.0");
+    				System.out.println("MyFirstMavenApp version: "+ VERSION);
     				System.exit(0);
     			}
     			
@@ -149,6 +196,21 @@ public class App {
     			System.out.println("ERROR: Arguments\\parameter is not valid. "+argsEx);
     		}
     	}
+    	
+    	/*
+    	 * Write help message to standard output using
+    	 * the provided instance of {@code OptionParser}. 
+    	 */
+    	private static void printUsage(final OptionParser parser) {
+    		
+    		try {
+    			parser.printHelpOn(System.out);
+    		}
+    		catch(IOException ioEx) {
+    			//System.out.println("ERROR: Unable to print usage - "+ioEX);
+    			LOG.error("ERROR: Unable to print usage - "+ioEx);
+    		}
+    	}//EOM
     	
     	/*
     	 * View the arguments presented at the command line
@@ -180,4 +242,5 @@ public class App {
     	
     	LOG.info("Appending string: {}.", "Application log test message - Hi");
     }
-}
+    
+}//EOM

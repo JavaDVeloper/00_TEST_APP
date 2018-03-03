@@ -7,15 +7,20 @@ REM	IF	JAVA_HOME	is	set	you	do	not	need	to	specify	the	path	just	java
 REM	---------------------------------------------------------------------
 
 REM logging level at info default
-java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App
+REM java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App
+
+REM logging level at debug
+REM java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App -v
+
+REM help text
+REM java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App -help
+
+REM version text
+REM java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App -version
+
+REM RUN
 
 REM logging level at debug
 java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App -v
-
-REM help text
-java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App -help
-
-REM version text
-java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App -version
 
 PAUSE
