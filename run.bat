@@ -21,6 +21,6 @@ REM java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App -ver
 REM RUN
 
 REM logging level at debug
-java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App -v
+java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App
 
 PAUSE
