@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 
+import com.barpiotr.MyFirstMavenApp.data.DataManagerSQLite;
 import com.barpiotr.MyFirstMavenApp.menu.MenuBuilder;
 
 import joptsimple.OptionException;
@@ -56,7 +57,7 @@ public class App {
 	// The getLogger() part should contain the name of the class it's in
 	private static Logger LOG;
 
-	private static String VERSION = "0.4";
+	private static String VERSION = "0.5";
 
 	// The URL and name of the SQLite database
 	// TODO: Remove database location and name hard coding and pass in as a
@@ -82,9 +83,13 @@ public class App {
 		// testLogOutput();
 
 		this.someInput = new Scanner(System.in);
-
+		
+		//from version 0.4
 		// do something here: Display the list of users from the database
-		showListOfUsers();
+		//showListOfUsers();
+		
+		//set the database file to use
+		DataManagerSQLite.getInstance().setDataFile(this.databaseFile);
 		
 		MenuBuilder theMenu = new MenuBuilder();
 		
@@ -111,6 +116,8 @@ public class App {
 	/*
 	 * write out the users in a users table for the database specified
 	 */
+	
+	/* WAS IN VERSION 0.4
 	private void showListOfUsers() {
 
 		this.today = new Date();
@@ -138,22 +145,27 @@ public class App {
 			while (resultSet.next()) {
 				LOG.debug("User found: " + resultSet.getString("userName"));
 			}
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			// if the error message is "out of memory",
 			// it probably means no database file is found
 			LOG.error(e.getMessage());
-		} finally {
+		}
+		finally {
 			try {
 				if (connection != null) {
 					connection.close();
 				}
 
-			} catch (SQLException e) {
+			}
+			catch (SQLException e) {
 				// connection close failed
 				LOG.error(e.getMessage());
 			}
 		}
 	}
+	
+	*/ //WAS IN VERSION 0.4
 
 	/*
 	 * action the arguments presented at the command line instantiate the App class
@@ -192,14 +204,16 @@ public class App {
 				Level logLevel = Level.DEBUG;
 				System.out.println("RUN WITH: logging level requested: " + logLevel);
 				App anApp = new App(logLevel);
-			} else {
+			}
+			else {
 				System.out.println("RUN WITH: logging level requested: " + Level.INFO);
 				App anApp = new App();
 			}
-		} catch (OptionException argsEx) {
+		}
+		catch (OptionException argsEx) {
 			System.out.println("ERROR: Arguments\\parameter is not valid. " + argsEx);
 		}
-	}
+	}//EOM
 
 	/*
 	 * Write help message to standard output using the provided instance of {@code
@@ -209,7 +223,8 @@ public class App {
 
 		try {
 			parser.printHelpOn(System.out);
-		} catch (IOException ioEx) {
+		}
+		catch (IOException ioEx) {
 			// System.out.println("ERROR: Unable to print usage - "+ioEX);
 			LOG.error("ERROR: Unable to print usage - " + ioEx);
 		}
@@ -223,13 +238,14 @@ public class App {
 	private static void seeCommandlineInput(String args[]) {
 		if (args.length == 0) {
 			System.out.println("There were no commandline arguments passed!");
-		} else {
+		}
+		else {
 			// display the command line entered
 			for (int i = 0; i < args.length; i++) {
 				System.out.println(args[i]);
 			}
 		}
-	}
+	}//EOM
 
 	/*
 	 * Test the Log4j2 logging
@@ -243,6 +259,6 @@ public class App {
 		LOG.fatal("Log test: Test printed on fatal");
 
 		LOG.info("Appending string: {}.", "Application log test message - Hi");
-	}
+	}//EOM
 
 }// EOM
