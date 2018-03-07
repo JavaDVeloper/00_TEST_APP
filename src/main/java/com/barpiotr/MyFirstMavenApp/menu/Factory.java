@@ -133,7 +133,7 @@ public class Factory {
 		
 		try
 		{
-			theClass = Class.forName(className);    //causes the class to be initilised
+			theClass = Class.forName(className);    //causes the class to be initialized
 		}
 		catch (ClassNotFoundException e)
 		{
