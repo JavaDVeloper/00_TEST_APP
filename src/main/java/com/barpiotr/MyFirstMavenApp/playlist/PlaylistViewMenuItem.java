@@ -3,11 +3,8 @@ package com.barpiotr.MyFirstMavenApp.playlist;
 import java.util.Scanner;
 
 import com.barpiotr.MyFirstMavenApp.data.DataManagerSQLite;
-import com.barpiotr.MyFirstMavenApp.menu.ConsoleControls;
 import com.barpiotr.MyFirstMavenApp.menu.IExecutable;
-import com.barpiotr.MyFirstMavenApp.user.UserConsoleListView;
-import com.barpiotr.MyFirstMavenApp.user.UserController;
-import com.barpiotr.MyFirstMavenApp.user.UserDAO;
+
 
 public class PlaylistViewMenuItem implements IExecutable {
 
