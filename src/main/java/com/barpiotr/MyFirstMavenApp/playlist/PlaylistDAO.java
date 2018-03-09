@@ -1,5 +1,11 @@
 package com.barpiotr.MyFirstMavenApp.playlist;
 
+/**
+ * Date: 2018-03-04
+ * 
+ * @author: Piotr Bar
+ */
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -54,18 +60,19 @@ public class PlaylistDAO implements IPlaylistDAO {
 			Statement statement2 = connection.createStatement();
 			statement2.setQueryTimeout(30); //set timeout to 30 sec.
 			
-			ResultSet resultSet2 = statement2.executeQuery("select userName FROM User u INNER JOIN Playlist p ON u.userID = p.userID");
+			ResultSet resultSet2 = statement2.executeQuery("select userFirstName, userLastName FROM User u INNER JOIN Playlist p ON u.userID = p.userID");
 			
 			//iterate through the results create playlist objects put in the ListArray
 			
-			while(resultSet.next()) {
+			while(resultSet.next() && resultSet2.next()) {
 				
 				Playlist playlist = new Playlist(
 						resultSet.getInt("playlistID"),
 						resultSet.getString("playlistName"),
+						resultSet.getString("reasonToInclude"),
 						resultSet.getString("playlistLastUpdate"),
-						//resultSet.getInt("userID")
-						resultSet2.getString("userName")
+						resultSet2.getString("userFirstName"),
+						resultSet2.getString("userLastName")
 						);
 
 				//putting the playlist objects into the list but not using them

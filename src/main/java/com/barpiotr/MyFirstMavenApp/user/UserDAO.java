@@ -57,11 +57,9 @@ public class UserDAO implements IUserDAO {
 				
 				User user = new User(
 						resultSet.getInt("userID"),
-						resultSet.getString("userName"),
+						resultSet.getString("userFirstName"),
+						resultSet.getString("userLastName"),
 						resultSet.getString("userEmail"),
-						resultSet.getString("userRole"),
-						resultSet.getString("userToken"),
-						resultSet.getInt("userStatus"),
 						resultSet.getString("userLastUpdate")
 						);
 				//putting the user objects into the list but not using them
@@ -69,6 +67,7 @@ public class UserDAO implements IUserDAO {
 				
 				//print the results by using the toString() on User
 				LOG.debug("User object: "+user);
+				
 			}
 		}
 		catch(SQLException e)

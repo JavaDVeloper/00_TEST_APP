@@ -2,8 +2,9 @@ package com.barpiotr.MyFirstMavenApp.menu;
 
 /*****************************************************************
 *
+**	@author:Piotr Bar
+*
 *	Date:	2018-03-04
-*	@author:Piotr Bar
 *
 *	Ref:	https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println
 *	Ref:	https://stackoverflow.com/questions/2979383/java-clear-the-console

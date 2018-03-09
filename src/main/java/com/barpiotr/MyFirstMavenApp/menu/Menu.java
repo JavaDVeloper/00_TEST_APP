@@ -31,6 +31,7 @@ public class Menu extends MenuWidget {
 	int selection;
 	
 	Scanner input = new Scanner(System.in);
+
 	Factory f = Factory.getFactory();
 	
 	

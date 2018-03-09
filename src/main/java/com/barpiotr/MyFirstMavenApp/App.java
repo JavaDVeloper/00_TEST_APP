@@ -1,5 +1,21 @@
 package com.barpiotr.MyFirstMavenApp;
 
+/*********************************************************************
+ * Hello world!
+ * 
+ * author: Piotr Bar;
+ * 
+ * Created: 2018-Feb-22
+ * 
+ * The purpose of this application is to provide an example for the following:
+ * 
+ * - Demonstrate the use of development tools: GIT, MAVEN, ECLIPSE; -
+ * Demonstrate how to use Eclipse; - Provide a refresher of OOP in Java; -
+ * Provide an introduction to project file structure layout - MAVEN Archetype; -
+ * Show how to set up Log4j2;
+ *
+ *****************************************************/
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -24,17 +40,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/*********************************************************************
- * Hello world! author: Piotr Bar; Created: 2018-Feb-22
- * 
- * The purpose of this application is to provide an example for the following:
- * 
- * - Demonstrate the use of development tools: GIT, MAVEN, ECLIPSE; -
- * Demonstrate how to use Eclipse; - Provide a refresher of OOP in Java; -
- * Provide an introduction to project file structure layout - MAVEN Archetype; -
- * Show how to set up Log4j2;
- *
- *****************************************************/
 public class App {
 
 	public static void main(String[] args) {

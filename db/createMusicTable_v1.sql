@@ -4,6 +4,8 @@ CREATE TABLE Music
 	musicTitle varchar(100)	not null,
 	musicPerformerName	text            not null,
     musicOriginYear 	integer         not null,
-    playlistID          integer		    not null,
-    FOREIGN KEY (playlistID) REFERENCES Playlist(playlistID)
+    linkToPlay varchar(100)	not null,
+    reasonToInclude text not null,
+    userID          integer		    not null,
+    FOREIGN KEY (userID) REFERENCES User(userID)
 );

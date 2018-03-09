@@ -1,5 +1,11 @@
 package com.barpiotr.MyFirstMavenApp.music;
 
+/**
+ * Date: 2018-03-04
+ * 
+ * @author: Piotr Bar
+ */
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -54,24 +60,21 @@ public class MusicDAO implements IMusicDAO {
 			Statement statement2 = connection.createStatement();
 			statement2.setQueryTimeout(30); //set timeout to 30 sec.
 			
-			ResultSet resultSet2 = statement2.executeQuery("select playlistName FROM Playlist p INNER JOIN Music m ON p.playlistID = m.playlistID");
+			ResultSet resultSet2 = statement2.executeQuery("select playlistName FROM Playlist p INNER JOIN Music m ON p.userID = m.userID");
 			
-			Statement statement3 = connection.createStatement();
-			statement3.setQueryTimeout(30); //set timeout to 30 sec.
-			
-			ResultSet resultSet3 = statement3.executeQuery("select userName FROM User u INNER JOIN Playlist p ON u.userID = p.userID");
-	
+
 			//iterate through the results create music objects put in the ListArray
 			
-			while(resultSet.next()) {
+			while(resultSet.next() && resultSet2.next()) {
 				
 				Music music = new Music (
 						resultSet.getInt("musicID"),
 						resultSet.getString("musicTitle"),
 						resultSet.getString("musicPerformerName"),
 						resultSet.getString("musicOriginYear"),
-						resultSet2.getString("playlistName"),
-						resultSet3.getString("userName")
+						resultSet.getString("linkToPlay"),
+						resultSet.getString("reasonToInclude"),
+						resultSet2.getString("playlistName")
 						);
 				
 				//putting the music objects into the list but not using them

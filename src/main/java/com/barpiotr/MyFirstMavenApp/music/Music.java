@@ -16,26 +16,28 @@ public class Music {
 	private String musicTitle;
 	private String musicPerformerName;
 	private String musicOriginYear;
+	private String linkToPlay;
+	private String reasonToInclude;
 	private String playlistName;
-	private String userName;
-
+	
 	//CONSTRUCTORS
 	//...................................
-	
-	public Music(int musicID, String musicTitle, String musicPerformerName, String musicOriginYear, String playlistName,
-			String userName) {
+
+	public Music(int musicID, String musicTitle, String musicPerformerName, String musicOriginYear, String linkToPlay,
+			String reasonToInclude, String playlistName) {
 		this.musicID = musicID;
 		this.musicTitle = musicTitle;
 		this.musicPerformerName = musicPerformerName;
 		this.musicOriginYear = musicOriginYear;
+		this.linkToPlay = linkToPlay;
+		this.reasonToInclude = reasonToInclude;
 		this.playlistName = playlistName;
-		this.userName = userName;
 	}
-
 
 	//METHODS
 	//..................................
-	
+
+
 	public int getMusicID() {
 		return musicID;
 	}
@@ -68,6 +70,22 @@ public class Music {
 		this.musicOriginYear = musicOriginYear;
 	}
 
+	public String getLinkToPlay() {
+		return linkToPlay;
+	}
+
+	public void setLinkToPlay(String linkToPlay) {
+		this.linkToPlay = linkToPlay;
+	}
+
+	public String getReasonToInclude() {
+		return reasonToInclude;
+	}
+
+	public void setReasonToInclude(String reasonToInclude) {
+		this.reasonToInclude = reasonToInclude;
+	}
+
 	public String getPlaylistName() {
 		return playlistName;
 	}
@@ -75,26 +93,21 @@ public class Music {
 	public void setPlaylistName(String playlistName) {
 		this.playlistName = playlistName;
 	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
 	
-
+	
 	//METHODS CTN...
 
 	@Override
 	public String toString() {
-		return "Music [Song no=" + musicID + ", Song title=" + musicTitle + ", Sung by=" + /*userID */musicPerformerName+ ", Orignally performed in="
-				+ musicOriginYear + ", Belongs to playlist=" + playlistName +", Proposed by=" + userName +"]";
+		return String.format(
+				"Music [Song No: %s, Song Title %s, Performed by: %s, Published in %s, Go to listen to: %s, Why included %s, Part of playlist: %s]",
+				musicID, musicTitle, musicPerformerName, musicOriginYear, linkToPlay, reasonToInclude, playlistName);
 	}
+	
 
 	public void display() {
 		System.out.println(this.toString());
 	}
+
 
 }//EOC

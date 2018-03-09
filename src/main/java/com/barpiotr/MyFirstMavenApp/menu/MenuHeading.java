@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-/*
+/***
  * Date: 2018-03-04
  * 
  * @author: Piotr Bar

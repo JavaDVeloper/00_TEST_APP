@@ -1,5 +1,11 @@
 package com.barpiotr.MyFirstMavenApp.playlist;
 
+/**
+ * Date: 2018-03-04
+ * 
+ * @author: Piotr Bar
+ */
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
