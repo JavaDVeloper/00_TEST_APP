@@ -15,17 +15,15 @@ public class Playlist {
 	private int playlistID;
 	private String playlistName;
 	private String playlistLastUpdate;
-	//private int userID;
 	private String userName;
 
 	//CONSTRUCTORS
 	//...................................
 	
-	public Playlist(int playlistID, String playlistName, String playlistLastUpdate, /*int userID */String userName) {
+	public Playlist(int playlistID, String playlistName, String playlistLastUpdate, String userName) {
 		this.playlistID = playlistID;
 		this.playlistName = playlistName;
 		this.playlistLastUpdate = playlistLastUpdate;
-		//this.userID = userID;
 		this.userName = userName;
 	}
 
@@ -48,15 +46,6 @@ public class Playlist {
 		this.playlistName = playlistName;
 	}
 
-	/*public int getUserID() {
-		return userID;
-	}
-
-	public void setUserID(int userID) {
-		this.userID = userID;
-	}
-
-	*/
 	public String getUserName() {
 		return userName;
 	}

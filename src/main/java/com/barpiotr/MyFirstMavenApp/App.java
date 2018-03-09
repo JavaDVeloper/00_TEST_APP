@@ -60,14 +60,16 @@ public class App {
 	private static String VERSION = "0.5";
 
 	// The URL and name of the SQLite database
-	// TODO: Remove database location and name hard coding and pass in as a
-	// parameter in the next version
-	private String databaseFile = "jdbc:sqlite:database/oreallyoreilly.db";
+
+	private String dbURL;
 
 	// CONSTRUCTORS
 	// ...................................................
 
-	public App(Level logLevel) {
+	public App(String dbURL, Level logLevel) {
+		
+		//set the database file
+		this.dbURL = dbURL;
 
 		// associate logging with this class so know the messages that came from objects
 		// of this class
@@ -83,13 +85,9 @@ public class App {
 		// testLogOutput();
 
 		this.someInput = new Scanner(System.in);
-		
-		//from version 0.4
-		// do something here: Display the list of users from the database
-		//showListOfUsers();
-		
+				
 		//set the database file to use
-		DataManagerSQLite.getInstance().setDataFile(this.databaseFile);
+		DataManagerSQLite.getInstance().setDataFile(this.dbURL);
 		
 		MenuBuilder theMenu = new MenuBuilder();
 		
@@ -106,84 +104,45 @@ public class App {
 		System.exit(0);
 	}
 
-	public App() {
-		this(Level.INFO);
+	public App(String dbFile) {
+		this(dbFile, Level.INFO);
 	}
 
 	// METHODS used by main() or debug methods - note they are static methods
 	// ......................................................
 
-	/*
-	 * write out the users in a users table for the database specified
-	 */
-	
-	/* WAS IN VERSION 0.4
-	private void showListOfUsers() {
-
-		this.today = new Date();
-		LOG.debug("Getting list of Users from Database as of " + today);
-
-		// if log level id debug e.g. -v parameter used then show database file being
-		// used
-		LOG.debug("Database file: " + this.databaseFile);
-
-		// Get JDBC connection to database
-		Connection connection = null;
-
-		try {
-			// create a database connection
-			connection = DriverManager.getConnection(this.databaseFile);
-
-			Statement statement = connection.createStatement();
-			statement.setQueryTimeout(30); // set timeout to 30 sec
-
-			// run the query
-			ResultSet resultSet = statement.executeQuery("select * from user");
-
-			// iterate through the results create User objects put in the ListArray
-
-			while (resultSet.next()) {
-				LOG.debug("User found: " + resultSet.getString("userName"));
-			}
-		}
-		catch (SQLException e) {
-			// if the error message is "out of memory",
-			// it probably means no database file is found
-			LOG.error(e.getMessage());
-		}
-		finally {
-			try {
-				if (connection != null) {
-					connection.close();
-				}
-
-			}
-			catch (SQLException e) {
-				// connection close failed
-				LOG.error(e.getMessage());
-			}
-		}
+	public String getDatabaseName() {
+		return this.dbURL;
 	}
 	
-	*/ //WAS IN VERSION 0.4
-
+	
 	/*
 	 * action the arguments presented at the command line instantiate the App class
 	 * based on the arguments passed
+	 * 
+	 * Note: you cannot use LOG.INFO etc. here as it does not instantiated until App() is called
+	 * if you try you will get a NullPointerException
 	 */
 
 	private static void actionCommandlineInput(String args[]) {
+		
+		String filename = null;
+		String dbType = null;
+		String dbURL = null;
 
 		try {
 
 			final OptionParser optionParser = new OptionParser();
 
 			// define the allowed arguments
-			optionParser.acceptsAll(Arrays.asList("v", "verbose"),
-					"Set logging level to DEBUG to see all levels of log messages").forHelp();
+			optionParser.acceptsAll(Arrays.asList("v", "verbose"),"Set logging level to DEBUG to see all levels of log messages").forHelp();
 			optionParser.acceptsAll(Arrays.asList("h", "help"), "Display help/usage information").forHelp();
 			optionParser.acceptsAll(Arrays.asList("r", "version"), "Display program version information").forHelp();
-
+			optionParser.acceptsAll(Arrays.asList("d", "database"), "Path and name of database file")
+										.withRequiredArg()
+										.ofType(String.class)
+										.describedAs("SQLite database");
+			
 			final OptionSet options = optionParser.parse(args);
 
 			if (options.has("help")) {
@@ -191,27 +150,86 @@ public class App {
 				System.out.println("It is provided as an example for teaching Java programming.");
 
 				printUsage(optionParser);
+				
 				System.exit(0);
 			}
 
 			if (options.has("version")) {
 				System.out.println("MyFirstMavenApp version: " + VERSION);
+				
 				System.exit(0);
 			}
-
-			// valid input so start the program with the name of the database file to use
-			if (options.has("verbose")) {
-				Level logLevel = Level.DEBUG;
-				System.out.println("RUN WITH: logging level requested: " + logLevel);
-				App anApp = new App(logLevel);
+			
+			if(!options.has("database")) {
+				System.out.println("Option \"-d database\" is required");
+				System.out.println("expecting the filename to be specified as follows: jdbc:sqlite:filepath\\filename");
+				
+				System.exit(0);
 			}
 			else {
-				System.out.println("RUN WITH: logging level requested: " + Level.INFO);
-				App anApp = new App();
+				//if two : not there throws IndexOutOfBoundsException
+				//to check if the file exists we have to jdbc:sqlite;
+				//to check what type of database is to be used extract sqlite or mysql
+				
+				dbURL = (String) options.valueOf("database");
+				//System.out.println("dbURL: " + dbURL);
+				
+				filename = dbURL.substring(dbURL.lastIndexOf(':')+1);
+				//System.out.println("filename: " + filename);
+				
+				dbType = dbURL.substring(dbURL.indexOf(':')+1, dbURL.lastIndexOf(':'));
+				//System.out.println("dbType: "+dbType);
+			}
+			
+			
+//The correct database type
+			
+			if (dbType.equals("sqlite")) {
+				if (!new File(filename).isFile()) {
+					System.out.println("ERROR: Database file does not exist: "+(String)options.valueOf("database"));
+					System.out.println("If the file is in the same directory as the JAR then the location would be: databaseFileName.Extention");
+					System.out.println("for windows the database file location would be: C://folder/folder/databaseFileName.Extention");
+					System.out.println("for MAC the database file location would be: /Volumes/VolumeName/folder/folder/databaseFileName.Extention");
+					
+					System.exit(0);
+				}
+			}
+			else if (dbType.equals("mysql")) {
+				// to support mysql we will need to add -u and -p parameters
+				//to get the username and password
+				
+				System.out.println("Support for mySQL is coming soon. Please use an SQL database");
+				
+				System.exit(0);
+			}
+			else
+			{
+				System.out.println("Unsupported database type requested " + dbType);
+				
+				System.exit(0);
+			}
+			// valid input so start the program with the name of the database file to use
+			
+			if (options.has("database") && options.has("verbose")) {
+				Level logLevel = Level.DEBUG;
+				System.out.println("RUN WITH: Database: " +dbURL + " logging level requested: " + logLevel);
+				App anApp = new App(dbURL, logLevel);
+			}
+			else {
+				System.out.println("RUN WITH: Database: "+ dbURL + " logging level requested: " + " logging as per main/resources/log4j2.xml");
+				App anApp = new App(dbURL);
 			}
 		}
 		catch (OptionException argsEx) {
 			System.out.println("ERROR: Arguments\\parameter is not valid. " + argsEx);
+			
+			System.exit(0);
+		}
+		catch (IndexOutOfBoundsException iobEx) {
+			System.out.println("ERROR: invalid database name format provided " + iobEx );
+			System.out.println("expecting the filename to be specified as follows > jdbc:sqlite:filepath\\filename");
+			
+			System.exit(0);
 		}
 	}//EOM
 
@@ -250,7 +268,7 @@ public class App {
 	/*
 	 * Test the Log4j2 logging
 	 */
-	private static void testLogOutput() {
+	private static void testLogOutput() {	
 
 		LOG.debug("Log test: Test printed on debug");
 		LOG.info("Log test: Test printed on info");

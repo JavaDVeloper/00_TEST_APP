@@ -10,17 +10,23 @@ REM logging level at info default
 REM java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App
 
 REM logging level at debug
-REM java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App -v
+REM java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App -r
 
 REM help text
 REM java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App -help
 
 REM version text
-REM java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App -version
+REM java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App -v
 
 REM RUN
 
 REM logging level at debug
-java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App
+REM java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App
+
+REM the name of the database file to be defined on the command line
+REM java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App -d	jdbc:sqlite:database/barpiotr.db
+
+REM the name of the database file to be defined on the command line  if -v for debug mode is used
+java -cp	target/MyFirstMavenApp-v1.jar	com.barpiotr.MyFirstMavenApp.App -d jdbc:sqlite:database/barpiotr.db - v
 
 PAUSE

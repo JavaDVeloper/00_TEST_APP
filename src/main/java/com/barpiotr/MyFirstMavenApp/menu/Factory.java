@@ -4,7 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- *  Instanciate an object of a classed based on being supplied the class name
+ *  Instantiate an object of a classed based on being supplied the class name
  *  as a string parameter. The object is returned as an object of class Object
  *  the lowest level Java class from which all other classes extend. The
  *  returned object must be cast to the class required.
@@ -20,7 +20,7 @@ import java.lang.reflect.InvocationTargetException;
  *
  *  example 1:
  *
- *  The instanciation of an object with no parameters
+ *  The instantiation of an object with no parameters
  *  Note the name of the class must contain its URL or package path.
  *
  *  // get a factory object
@@ -36,7 +36,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Factory {
 	
-	private static Factory theFactory   = null;
+	private static Factory theFactory = null;
 
 	// CONSTRUCTORS
 	//............................................................
@@ -46,17 +46,14 @@ public class Factory {
 	// METHODS 
 	//............................................................
 	
-	public static Factory getFactory()
-	{
-	    if ( theFactory == null)
-	    {
+	public static Factory getFactory() {
+	    if ( theFactory == null) {
 	      theFactory = new Factory();
 	    }
 	    return theFactory;
 	}
 	
-	public static void removeFactory()
-	{
+	public static void removeFactory() {
 	    if ( theFactory != null)
 	      theFactory = null;
 	}	
@@ -65,8 +62,7 @@ public class Factory {
      * return an object of a class which has no parameters
      **/
 
-	public Object getObject(String className) throws FactoryException
-	{
+	public Object getObject(String className) throws FactoryException {
 		Object[] parameters = new Object[0];
 		String[] parameterNames = new String[0];
 		return createObject(className, parameters, parameterNames);
@@ -76,11 +72,10 @@ public class Factory {
 	 * return an object of a class which has one parameter
 	 **/
 
-	public Object getObject( String className,
-	                           Object parameter,
-	                           String parameterName)
-	throws FactoryException
-	{
+	public Object getObject (String className,
+	                         Object parameter,
+	                         String parameterName)
+	throws FactoryException	{
 			Object[] parameters = new Object[1];          // array of size 1
 			parameters[0] = parameter;                    // init first element
 			String[] parameterNames = new String[1];
@@ -92,11 +87,10 @@ public class Factory {
 	 * return an object of a class which has more than one parameter
 	 **/
 
-	public Object getObject( String className,
-	                           Object[] parameters,
-	                           String[] parameterNames)
-	throws FactoryException
-	{
+	public Object getObject (String className,
+	                         Object[] parameters,
+	                         String[] parameterNames)
+	throws FactoryException {
 			return createObject(className, parameters, parameterNames);
 	}
 
@@ -120,23 +114,20 @@ public class Factory {
    *
    **/
 
-   public Object createObject( String className,
-                              Object[] parameters,
-                              String[] parameterClassNames )
-   throws FactoryException
-   {
+   public Object createObject (String className,
+                               Object[] parameters,
+                               String[] parameterClassNames )
+   throws FactoryException {
 		int x = 0;         // counters
 
 		Class theClass;    // represents a classes and interfaces in a running java application
 
 		// see if class exists and can be initialized
 		
-		try
-		{
+		try {
 			theClass = Class.forName(className);    //causes the class to be initialized
 		}
-		catch (ClassNotFoundException e)
-		{
+		catch (ClassNotFoundException e) {
 			throw new FactoryException(e);
 		}
 
@@ -145,57 +136,46 @@ public class Factory {
               
 	    // Find the class types of the parameters so the right constructor can be used
 	    // 1. create an array of Class objects equal to the parameters array size
-	    // 2. loop through the parameters class names and initialise instances of
+	    // 2. loop through the parameters class names and initialize instances of
 	    //    their classes
 
 		Class[] classParams = new Class[parameters.length];
 
-		try
-		{
-			for (x = 0; x < parameters.length; x++)
-			{
+		try	{
+			for (x = 0; x < parameters.length; x++)	{
 				classParams[x] = Class.forName(parameterClassNames[x]);
 			}
 		}
-		catch (ClassNotFoundException e)
-		{
+		catch (ClassNotFoundException e) {
 			throw new FactoryException(e);
 		}
 
 
 		// look for a constructor matching the parameter signature
-		try
-		{
+		try	{
 			con = theClass.getConstructor(classParams);
 		}
-		catch (NoSuchMethodException e)
-		{
+		catch (NoSuchMethodException e) {
 			throw new FactoryException(e);
 		}
-		catch (SecurityException e)
-		{
+		catch (SecurityException e)	{
 			throw new FactoryException(e);
 		}
 
-		// instanciate the object using the constructor
-		try
-		{
+		// instantiate the object using the constructor
+		try	{
 			return (Object)con.newInstance(parameters);
 		}
-		catch (InstantiationException e)
-		{
+		catch (InstantiationException e) {
 			throw new FactoryException(e);
 		}
-		catch (IllegalAccessException e)
-		{
+		catch (IllegalAccessException e) {
 			throw new FactoryException(e);
 		}
-		catch (IllegalArgumentException e)
-		{
+		catch (IllegalArgumentException e) {
 			throw new FactoryException(e);
 		}
-		catch (InvocationTargetException e)
-		{
+		catch (InvocationTargetException e) {
 			e.getTargetException().getMessage();
 			e.getTargetException().printStackTrace();
 			throw new FactoryException(e);
