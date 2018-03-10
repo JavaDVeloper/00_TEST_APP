@@ -26,12 +26,17 @@ log/
 *.iml
 .idea/
         
-# Exlipse
+# Eclipse
 .eclipse
 .classpath
 .project
 .settings/
 *.ini
+*.pdf
+requirements
+play
+Assignment.md
+Requirements.md
 
 # Ref: https://labs.consol.de/development/git/2017/02/22/gitignore.html
 # Ref: http://gary-rowe.com/agilestack/2012/10/12/a-gitignore-file-for-intellij-and-eclipse-with-maven/

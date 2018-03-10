@@ -1,4 +1,4 @@
-## DEV-v2 TO DO notes
+## dev-v2 TO DO notes
 
 A set of notes for work to do in this branch.
 
